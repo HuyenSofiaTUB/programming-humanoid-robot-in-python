@@ -71,6 +71,7 @@ class AngleInterpolationAgent(PIDAgent):
 
         return target_joints
 
+
 if __name__ == '__main__':
     agent = AngleInterpolationAgent()
     agent.keyframes = hello()  # CHANGE DIFFERENT KEYFRAMES
