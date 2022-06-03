@@ -36,12 +36,11 @@ class AngleInterpolationAgent(PIDAgent):
 
     def think(self, perception):
         target_joints = self.angle_interpolation(self.keyframes, perception)
-        target_joints['RHipYawPitch'] = target_joints['LHipYawPitch'] # copy missing joint in keyframes
+        target_joints["RHipYawPitch"] = target_joints["LHipYawPitch"] # copy missing joint in keyframes
         self.target_joints.update(target_joints)
         return super(AngleInterpolationAgent, self).think(perception)
 
     def angle_interpolation(self, keyframes, perception):
-        target_joints = {}
         # YOUR CODE HERE
         if self.startTime < 0:
             self.startTime = perception.time
@@ -58,19 +57,19 @@ class AngleInterpolationAgent(PIDAgent):
                     p3 = keys[joint][0][0]
                     p1 = 0
                     p2 = keys[joint][0][1][2]
-                    target_joints[joint] = ((1 - t) ** 3) * p0 + 3 * ((1 - t) ** 2) * t * p1 + 3 * (1 - t) * (
+                    self.target_joints[joint] = ((1 - t) ** 3) * p0 + 3 * ((1 - t) ** 2) * t * p1 + 3 * (1 - t) * (
                                 t ** 2) * p2 + (t ** 3) * p3
                 elif times[joint][key] <= passed_time < times[joint][key + 1]:
                     p0 = keys[joint][key][0]
                     p3 = keys[joint][key + 1][0]
                     p1 = keys[joint][key][2][2] + p0
                     p2 = keys[joint][key + 1][1][2] + p3
-                    target_joints[joint] = ((1 - t) ** 3) * p0 + 3 * ((1 - t) ** 2) * t * p1 + 3 * (1 - t) * (
+                    self.target_joints[joint] = ((1 - t) ** 3) * p0 + 3 * ((1 - t) ** 2) * t * p1 + 3 * (1 - t) * (
                                 t ** 2) * p2 + (t ** 3) * p3
-            if names[joint] == "LHipYawPitch":
-                target_joints["RHipYawPitch"] = target_joints["LHipYawPitch"]
+            # if names[joint] == "LHipYawPitch":
+            #     target_joints["RHipYawPitch"] = target_joints["LHipYawPitch"]
 
-        return target_joints
+        return self.target_joints
 
 
 if __name__ == '__main__':

@@ -11,13 +11,9 @@
 import numpy as np
 
 from angle_interpolation import AngleInterpolationAgent
-from keyframes import hello
+from keyframes import leftBackToStand
 import pickle
 from os import listdir
-
-ROBOT_POSE_DATA_DIR = 'robot_pose_data'
-classes = listdir(ROBOT_POSE_DATA_DIR)
-joints = ['LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch']
 
 
 class PostureRecognitionAgent(AngleInterpolationAgent):
@@ -37,22 +33,27 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
     def recognize_posture(self, perception):
         posture = 'unknown'
         # YOUR CODE HERE
-        clf = pickle.load(open(self.posture_classifier, 'rb'))
-        all_data = []
-        for i in joints:
-            all_data.append(perception.joint[i])
-        for j in perception.imu:
-            all_data.append(j)
+        ROBOT_POSE_DATA_DIR = 'robot_pose_data'
+        classes = listdir(ROBOT_POSE_DATA_DIR)
+        joints = ['LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'RHipYawPitch', 'RHipRoll', 'RHipPitch',
+                  'RKneePitch']
 
-        all_data = np.asarray(all_data)
-        #all_data = all_data.reshape(-1, 1)
+        clf = pickle.load(open(self.posture_classifier, 'rb'))
+        data = []
+        for i in joints:
+            data.append(perception.joint[i])
+        for j in perception.imu:
+            data.append(j)
+
+        all_data = [data]
+        #all_data = np.asarray(all_data)
 
         predicted = clf.predict(all_data)
-        posture = classes[predicted]
+        posture = np.array(classes)[predicted]
         return posture
 
 
 if __name__ == '__main__':
     agent = PostureRecognitionAgent()
-    agent.keyframes = hello()  # CHANGE DIFFERENT KEYFRAMES
+    agent.keyframes = leftBackToStand()  # CHANGE DIFFERENT KEYFRAMES
     agent.run()
