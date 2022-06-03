@@ -35,8 +35,8 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
         # YOUR CODE HERE
         ROBOT_POSE_DATA_DIR = 'robot_pose_data'
         classes = listdir(ROBOT_POSE_DATA_DIR)
-        joints = ['LHipRoll', 'LHipPitch', 'LKneePitch', 'RHipRoll', 'RHipPitch',
-                  'RKneePitch', 'LShoulderPitch', 'RShoulderPitch']
+        joints = ['LHipRoll', 'LHipPitch', 'LElbowRoll', 'RHipRoll', 'RHipPitch',
+                  'RElbowRoll', 'LShoulderPitch', 'RShoulderPitch']
 
         clf = pickle.load(open(self.posture_classifier, 'rb'))
         data = []
