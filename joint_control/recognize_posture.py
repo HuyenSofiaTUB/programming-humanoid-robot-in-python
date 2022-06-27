@@ -24,8 +24,8 @@ class PostureRecognitionAgent(AngleInterpolationAgent):
                  sync_mode=True):
         super(PostureRecognitionAgent, self).__init__(simspark_ip, simspark_port, teamname, player_id, sync_mode)
         self.posture = 'unknown'
-        self.posture_classifier = pickle.load(open('../joint_control/robot_pose.pkl', 'rb'))  # LOAD YOUR CLASSIFIER
-        self.classes = listdir('../joint_control/robot_pose_data')
+        self.posture_classifier = pickle.load(open('/home/sofia/Documents/programming-humanoid-robot-in-python/joint_control/robot_pose.pkl', 'rb'))  # LOAD YOUR CLASSIFIER
+        self.classes = listdir('/home/sofia/Documents/programming-humanoid-robot-in-python/joint_control/robot_pose_data')
         self.joints = ['LHipYawPitch', 'LHipRoll', 'LHipPitch', 'LKneePitch', 'RHipYawPitch', 'RHipRoll', 'RHipPitch', 'RKneePitch']
 
     def think(self, perception):

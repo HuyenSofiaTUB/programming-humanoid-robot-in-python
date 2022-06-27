@@ -80,13 +80,13 @@ class ForwardKinematicsAgent(PostureRecognitionAgent):
                         [0, s, c, 0],
                         [x, y, z, 1]])
 
-        if "Roll" in joint_name:
+        if "Pitch" in joint_name:
             T = matrix([[c, 0, s, 0],
                         [0, 1, 0, 0],
                         [-s, 0, c, 0],
                         [x, y, z, 1]])
 
-        if "Roll" in joint_name:
+        if "Yaw" in joint_name:
             T = matrix([[c, s, 0, 0],
                         [-s, c, 0, 0],
                         [0, 0, 1, 0],
