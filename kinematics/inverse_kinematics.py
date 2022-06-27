@@ -32,8 +32,8 @@ class InverseKinematicsAgent(ForwardKinematicsAgent):
 
         lambda_ = 0.001
 
-        for chain in self.chains:
-            for joint in self.chains[chain]:
+        for chain_joints in self.chains.values():
+            for joint in chain_joints:
                 joint_angles[joint] = self.perception.joint[joint]
 
         target = np.array([self.from_trans(transform)]).T
