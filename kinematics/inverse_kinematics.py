@@ -13,7 +13,11 @@
 from forward_kinematics import ForwardKinematicsAgent
 from numpy.matlib import identity
 import numpy as np
+from math import atan2
 
+import random
+from time import time
+from numpy.linalg import pinv
 
 class InverseKinematicsAgent(ForwardKinematicsAgent):
     def inverse_kinematics(self, effector_name, transform):
@@ -23,8 +27,9 @@ class InverseKinematicsAgent(ForwardKinematicsAgent):
         :param transform: 4x4 transform matrix
         :return: list of joint angles
         '''
-        joint_angles = []
+        joint_angles = {}
         # YOUR CODE HERE
+
         lambda_ = 0.001
 
         for chain in self.chains:
@@ -68,6 +73,21 @@ class InverseKinematicsAgent(ForwardKinematicsAgent):
             keys.insert(i, [[self.perception.joint[name], [3, 0, 0]], [joint_angles[name], [3, 0, 0]]])
 
         self.keyframes = (names, times, keys)  # the result joint angles have to fill in
+
+    def from_trans(self, T):
+        # return x,y,z
+        x, y, z = T[3, 0], T[3, 1], T[3, 2]
+
+        angle_x, angle_y, angle_z = 0, 0, 0
+
+        if T[0, 0] == 1:
+            angle_x = atan2(T[2, 1], T[1, 1])
+        elif T[1, 1] == 1:
+            angle_y = atan2(T[0, 2], T[0, 0])
+        elif T[2, 2] == 1:
+            angle_z = atan2(T[1, 0], T[0, 0])
+
+        return np.array([x, y, z, angle_x, angle_y, angle_z])
 
 if __name__ == '__main__':
     agent = InverseKinematicsAgent()

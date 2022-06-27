@@ -21,7 +21,7 @@
 
 
 from pid import PIDAgent
-from keyframes import hello
+import keyframes
 
 
 class AngleInterpolationAgent(PIDAgent):
@@ -62,7 +62,7 @@ class AngleInterpolationAgent(PIDAgent):
                 elif times[joint][key] <= passed_time < times[joint][key + 1]:
                     p0 = keys[joint][key][0]
                     p3 = keys[joint][key + 1][0]
-                    p1 = keys[joint][key][2][2] + p0
+                    p1 = keys[joint][key][1][2] + p0
                     p2 = keys[joint][key + 1][1][2] + p3
                     self.target_joints[joint] = ((1 - t) ** 3) * p0 + 3 * ((1 - t) ** 2) * t * p1 + 3 * (1 - t) * (
                                 t ** 2) * p2 + (t ** 3) * p3
@@ -74,5 +74,5 @@ class AngleInterpolationAgent(PIDAgent):
 
 if __name__ == '__main__':
     agent = AngleInterpolationAgent()
-    agent.keyframes = hello()  # CHANGE DIFFERENT KEYFRAMES
+    agent.keyframes = keyframes.rightBellyToStand()  # CHANGE DIFFERENT KEYFRAMES
     agent.run()
